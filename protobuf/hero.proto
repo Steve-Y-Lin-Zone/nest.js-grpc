@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package hero;
+
+/**
+ * 英雄資料
+ */
+message Hero {
+  int32 id = 1;    // 英雄編號
+  string name = 2; // 英雄名稱
+}
+
+/**
+ * 英雄群體資料
+ */
+message Heros {
+  repeated Hero list = 1; // 英雄列表
+}
+
+/**
+ * 英雄編號
+ */
+message HeroById {
+  int32 id = 1; // 英雄編號
+}
+
+/** 
+ * 英雄招式資料
+ */
+message HeroAttack {
+  string hero = 1;  // 英雄名稱
+  string name = 2;  // 英雄招式名稱
+  int32 demage = 3; // 英雄招式傷害
+}
+
+/**
+ * 英雄打招呼
+ */ 
+message HeroGreeting {
+  string hero = 1;    // 英雄名稱
+  string message = 2; // 打招呼內容
+}
+
+/**
+ * 英雄受傷害
+ */
+message HeroInjured {
+  string hero = 1;  // 英雄名稱
+  int32 demage = 2; // 英雄所受傷害
+}
+
+/**
+ * 英雄打招呼群組訊息
+ */
+message HeroGreetingGroup {
+  repeated HeroGreeting greet = 1; //英雄打招呼訊息
+}
+
+/**
+ * 英雄服務
+ */
+service HeroService {
+  rpc Insert (stream Hero) returns (Heros) {}
+  rpc FindById (HeroById) returns (Hero) {}
+  rpc Attack (HeroById) returns (stream HeroAttack) {}
+  rpc Greet (stream HeroGreeting) returns (HeroGreetingGroup) {}
+  rpc Combat (stream HeroAttack) returns (stream HeroInjured) {}
+}
